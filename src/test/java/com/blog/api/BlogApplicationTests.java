@@ -1,10 +1,10 @@
-package com.hodolog.api;
+package com.blog.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HodologApplicationTests {
+class BlogApplicationTests {
 
     @Test
     void contextLoads() {

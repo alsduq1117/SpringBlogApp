@@ -1,4 +1,4 @@
-package com.hodolog.api.request;
+package com.blog.api.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.hodolog.api.response;
+package com.blog.api.response;
 
 
 import lombok.Getter;
@@ -18,8 +18,5 @@ public class ErrorResponse {
     public void addValidation(String field, String errorMessage){
         this.validation.put(field,errorMessage);
     }
-
-
-
 
 }
