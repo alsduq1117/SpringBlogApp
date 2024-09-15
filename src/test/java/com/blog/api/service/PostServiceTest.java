@@ -3,6 +3,7 @@ package com.blog.api.service;
 import com.blog.api.domain.Post;
 import com.blog.api.repository.PostRepository;
 import com.blog.api.request.PostCreate;
+import com.blog.api.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -57,12 +58,12 @@ class PostServiceTest {
         postRepository.save(requestPost);
 
         // when
-        Post post = postService.get(requestPost.getId());
+        PostResponse response = postService.get(requestPost.getId());
 
         // then
-        Assertions.assertNotNull(post);
-        Assertions.assertEquals("foo", post.getTitle());
-        Assertions.assertEquals("bar", post.getContent());
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals("foo", response.getTitle());
+        Assertions.assertEquals("bar", response.getContent());
     }
 
 }

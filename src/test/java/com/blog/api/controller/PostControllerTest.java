@@ -112,7 +112,7 @@ class PostControllerTest {
     void test4() throws Exception {
         // given
         Post post = Post.builder()
-                .title("foo")
+                .title("123456789012312312")
                 .content("bar")
                 .build();
 
@@ -123,7 +123,7 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(post.getId()))
-                .andExpect(jsonPath("$.title").value("foo"))
+                .andExpect(jsonPath("$.title").value("1234567890"))
                 .andExpect(jsonPath("$.content").value("bar"))
                 .andDo(MockMvcResultHandlers.print());
 
