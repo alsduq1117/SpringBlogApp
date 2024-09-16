@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -30,5 +31,11 @@ public class PostController {
         PostResponse response = postService.get(id);
         return response;
     }
+
+    @GetMapping("/posts")
+    public List<PostResponse> getList(){
+        return postService.getList();
+    }
+
 
 }

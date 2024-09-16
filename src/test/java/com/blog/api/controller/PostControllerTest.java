@@ -4,6 +4,8 @@ import com.blog.api.domain.Post;
 import com.blog.api.repository.PostRepository;
 import com.blog.api.request.PostCreate;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -125,6 +127,38 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.id").value(post.getId()))
                 .andExpect(jsonPath("$.title").value("1234567890"))
                 .andExpect(jsonPath("$.content").value("bar"))
+                .andDo(MockMvcResultHandlers.print());
+
+    }
+
+    @Test
+    @DisplayName("글 여러개 조회")
+    void test5() throws Exception {
+        // given
+        Post post1 = Post.builder()
+                .title("title_1")
+                .content("content_1")
+                .build();
+
+        postRepository.save(post1);
+
+        Post post2 = Post.builder()
+                .title("title_2")
+                .content("content_2")
+                .build();
+
+        postRepository.save(post2);
+
+
+        // expected
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", Matchers.is(2)))
+                .andExpect(jsonPath("$.[0].title").value("title_1"))
+                .andExpect(jsonPath("$.[0].content").value("content_1"))
+                .andExpect(jsonPath("$.[1].title").value("title_2"))
+                .andExpect(jsonPath("$.[1].content").value("content_2"))
                 .andDo(MockMvcResultHandlers.print());
 
     }
