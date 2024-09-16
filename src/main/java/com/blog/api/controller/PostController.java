@@ -7,6 +7,8 @@ import com.blog.api.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +30,13 @@ public class PostController {
 
     @GetMapping("/posts/{postId}")
     public PostResponse get(@PathVariable(name = "postId") Long id){
-        PostResponse response = postService.get(id);
-        return response;
+        return postService.get(id);
+
     }
 
     @GetMapping("/posts")
-    public List<PostResponse> getList(){
-        return postService.getList();
+    public List<PostResponse> getList(Pageable pageable){
+        return postService.getList(pageable);
     }
 
 
