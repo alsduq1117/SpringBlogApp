@@ -3,6 +3,7 @@ package com.blog.api.service;
 import com.blog.api.domain.Post;
 import com.blog.api.repository.PostRepository;
 import com.blog.api.request.PostCreate;
+import com.blog.api.request.PostEdit;
 import com.blog.api.request.PostSearch;
 import com.blog.api.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
@@ -99,6 +100,48 @@ class PostServiceTest {
         Assertions.assertEquals(10L, posts.size());
         Assertions.assertEquals("김민엽 제목 19", posts.get(0).getTitle());
         Assertions.assertEquals("김민엽 제목 10", posts.get(9).getTitle());
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test4(){
+        // given
+        Post post = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("foo_edit")
+                .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post changedPost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
+        Assertions.assertEquals("foo_edit", changedPost.getTitle());
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void test5() {
+        // given
+        Post post = Post.builder()
+                .title("foo")
+                .content("bar")
+                .build();
+
+        postRepository.save(post);
+
+        // when
+        postService.delete(post.getId());
+
+        //then
+        Assertions.assertEquals(0, postRepository.count());
     }
 
 }
