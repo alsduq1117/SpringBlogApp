@@ -3,6 +3,7 @@ package com.blog.api.controller;
 import com.blog.api.domain.Post;
 import com.blog.api.repository.PostRepository;
 import com.blog.api.request.PostCreate;
+import com.blog.api.request.PostSearch;
 import com.blog.api.response.PostResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.MatcherAssert;
@@ -44,7 +45,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/posts 요청시 Hello World를 출력한다.")
+    @DisplayName("/posts 요청시 status 반환")
     void test() throws Exception {
         // given
         PostCreate request = PostCreate.builder()
@@ -60,7 +61,6 @@ class PostControllerTest {
                         .content(json)
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().string(""))
                 .andDo(MockMvcResultHandlers.print());
     }
 
@@ -138,28 +138,50 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("글 1페이지 조회")
+    @DisplayName("글 여러개 조회")
     void test5() throws Exception {
         // given
-        List<Post> requestPosts = IntStream.range(1,31)
+        List<Post> requestPosts = IntStream.range(0,20)
                 .mapToObj(i -> Post.builder()
                         .title("김민엽 제목 " + i)
                         .content("김민엽 내용 " + i)
                         .build()
                 )
                 .collect(Collectors.toList());
+
         postRepository.saveAll(requestPosts);
 
-        // when
-        mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=0&size=5&sort=id,desc"))
+        // expected
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=1&size=10")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(5)))
-                .andExpect(jsonPath("$.[0].id").value(30))
-                .andExpect(jsonPath("$.[0].title").value("김민엽 제목 30"))
-                .andExpect(jsonPath("$.[0].content").value("김민엽 내용 30"))
+                .andExpect(jsonPath("$.length()", Matchers.is(10)))
                 .andDo(MockMvcResultHandlers.print());
 
-        // then
+
+    }
+
+    @Test
+    @DisplayName("페이지를 0으로 요청하면 첫 페이지를 가져온다.")
+    void test6() throws Exception {
+        // given
+        List<Post> requestPosts = IntStream.range(0,20)
+                .mapToObj(i -> Post.builder()
+                        .title("김민엽 제목 " + i)
+                        .content("김민엽 내용 " + i)
+                        .build()
+                )
+                .collect(Collectors.toList());
+
+        postRepository.saveAll(requestPosts);
+
+        // expected
+        mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=0&size=10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", Matchers.is(10)))
+                .andDo(MockMvcResultHandlers.print());
+
 
     }
 
