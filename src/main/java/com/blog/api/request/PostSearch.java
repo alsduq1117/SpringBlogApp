@@ -1,12 +1,8 @@
 package com.blog.api.request;
 
-import com.blog.api.domain.Post;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import static java.lang.Math.min;
 
 @Getter
 @Setter

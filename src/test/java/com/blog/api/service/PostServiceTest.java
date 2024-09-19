@@ -13,15 +13,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class PostServiceTest {
@@ -33,7 +30,7 @@ class PostServiceTest {
     private PostRepository postRepository;
 
     @BeforeEach
-    void clean(){
+    void clean() {
         postRepository.deleteAll();
     }
 
@@ -58,7 +55,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("글 1개 조회")
-    void test2(){
+    void test2() {
         // given
         Post requestPost = Post.builder()
                 .title("foo")
@@ -77,16 +74,15 @@ class PostServiceTest {
     }
 
 
-
     @Test
     @DisplayName("글 1페이지 조회")
-    void test3(){
+    void test3() {
         // given
-        List<Post> requestPosts = IntStream.range(0,20)
+        List<Post> requestPosts = IntStream.range(0, 20)
                 .mapToObj(i -> Post.builder()
-                            .title("김민엽 제목 " + i)
-                            .content("김민엽 내용 " + i)
-                            .build()
+                        .title("김민엽 제목 " + i)
+                        .content("김민엽 내용 " + i)
+                        .build()
                 )
                 .collect(Collectors.toList());
         postRepository.saveAll(requestPosts);
@@ -107,7 +103,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("글 제목 수정")
-    void test4(){
+    void test4() {
         // given
         Post post = Post.builder()
                 .title("foo")
@@ -183,7 +179,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("글 제목 수정 - 글이 존재하지 않음")
-    void test8(){
+    void test8() {
         // given
         Post post = Post.builder()
                 .title("foo")

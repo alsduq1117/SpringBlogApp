@@ -36,16 +36,14 @@ public class PostController {
     }
 
     @PatchMapping("/posts/{postId}")
-    public void edit(@PathVariable(name = "postId") Long id, @RequestBody @Valid PostEdit postEdit){
+    public void edit(@PathVariable(name = "postId") Long id, @RequestBody @Valid PostEdit postEdit) {
         postService.edit(id, postEdit);
     }
 
     @DeleteMapping("/posts/{postId}")
-    public void delete(@PathVariable(name = "postId") Long id){
+    public void delete(@PathVariable(name = "postId") Long id) {
         postService.delete(id);
     }
-
-
 
 
 }
