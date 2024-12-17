@@ -32,17 +32,16 @@ const edit = () => {
 
 <template>
   <div>
-    <el-input v-model="post.title"/>
+    <el-input v-model="post.title" />
   </div>
 
   <div class="mt-2">
-    <el-input v-model="post.content" type="textarea" rows="15"/>
+    <el-input v-model="post.content" type="textarea" rows="15" />
   </div>
 
-  <div class="mt-2">
-    <el-button type="primary" @click="edit()">수정완료</el-button>
+  <div class="mt-2 d-flex justify-content-end">
+    <el-button type="warning" @click="edit()">수정완료</el-button>
   </div>
-
 </template>
 
 <style></style>
