@@ -44,7 +44,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/posts 요청시 status 반환")
+    @DisplayName("글 작성 요청시 status 반환")
     void test() throws Exception {
         // given
         PostCreate request = PostCreate.builder()
@@ -56,6 +56,7 @@ class PostControllerTest {
 
         // when,then
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
+                        .header("authorization", "minyeob")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
@@ -64,7 +65,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/posts 요청시 title 값은 필수다.")
+    @DisplayName("글 작성 요청시 title 값은 필수다.")
     void test2() throws Exception {
         // given
         PostCreate request = PostCreate.builder()
@@ -87,7 +88,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/posts 요청시 DB에 값이 저장된다")
+    @DisplayName("글 작성 요청시 DB에 값이 저장된다")
     void test3() throws Exception {
         // given
         PostCreate request = PostCreate.builder()
