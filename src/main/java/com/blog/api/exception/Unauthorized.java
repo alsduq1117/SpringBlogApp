@@ -18,6 +18,6 @@ public class Unauthorized extends CustomException {
 
     @Override
     public int getStatusCode() {
-        return 404;
+        return 401;
     }
 }
