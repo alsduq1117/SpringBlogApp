@@ -56,7 +56,6 @@ class PostControllerTest {
 
         // when,then
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
-                        .header("authorization", "minyeob")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )
