@@ -10,14 +10,9 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
-  data:
-    web:
-      pageable:
-        one-indexed-parameters: true
-
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
@@ -25,3 +20,17 @@ spring:
         order_updates: true
         format_sql: true
     defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+
+
+
+
+
