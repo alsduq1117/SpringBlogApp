@@ -1,5 +1,6 @@
 package com.blog.api.controller;
 
+import com.blog.api.domain.Session;
 import com.blog.api.domain.User;
 import com.blog.api.repository.SessionRepository;
 import com.blog.api.repository.UserRepository;
@@ -92,6 +93,50 @@ class AuthControllerTest {
                 .content(json))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.accessToken", Matchers.notNullValue()))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("로그인 후 권한이 필요한 페이지 접속한다 /foo")
+    void test4() throws Exception {
+        // given
+        User user = User.builder()
+                .email("alsduq1117@gmail.com")
+                .name("김민엽")
+                .password("1234")
+                .build();
+
+        Session session = user.addSession();
+        userRepository.save(user);
+
+
+        // when,then
+        mockMvc.perform(MockMvcRequestBuilders.get("/foo")
+                        .header("Authorization", session.getAccessToken())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("로그인 후 검증되지 않은 세션값으로 권한이 필요한 페이지에 접속 할 수 없다.")
+    void test5() throws Exception {
+        // given
+        User user = User.builder()
+                .email("alsduq1117@gmail.com")
+                .name("김민엽")
+                .password("1234")
+                .build();
+
+        Session session = user.addSession();
+        userRepository.save(user);
+
+
+        // when,then
+        mockMvc.perform(MockMvcRequestBuilders.get("/foo")
+                        .header("Authorization", session.getAccessToken() + "-O")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
                 .andDo(MockMvcResultHandlers.print());
     }
 }
