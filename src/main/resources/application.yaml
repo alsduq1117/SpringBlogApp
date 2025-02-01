@@ -31,6 +31,6 @@ spring:
         one-indexed-parameters: true
 
 
-
-
+springblog:
+  jwt-key: "secretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKey"
 
