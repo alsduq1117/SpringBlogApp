@@ -1,1 +1,1 @@
-INSERT INTO USERS (created_at, email, name, password) VALUES (NOW(), 'alsduq1117@gmail.com', '김민엽', '1234');
+-- INSERT INTO USERS (created_at, email, name, password) VALUES (NOW(), 'alsduq1117@gmail.com', '김민엽', '1234');

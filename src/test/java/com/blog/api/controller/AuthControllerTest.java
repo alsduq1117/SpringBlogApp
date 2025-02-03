@@ -5,6 +5,7 @@ import com.blog.api.domain.User;
 import com.blog.api.repository.SessionRepository;
 import com.blog.api.repository.UserRepository;
 import com.blog.api.request.Login;
+import com.blog.api.request.Signup;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -137,6 +138,25 @@ class AuthControllerTest {
                         .header("Authorization", session.getAccessToken() + "-O")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("회원가입")
+    void test6() throws Exception {
+        // given
+        Signup signup = Signup.builder()
+                .name("minyeob")
+                .password("1234")
+                .email("alsduq1117@naver.com")
+                .build();
+
+
+        // when,then
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/signup")
+                        .content(objectMapper.writeValueAsString(signup))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 }
