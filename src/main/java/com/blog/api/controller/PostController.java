@@ -1,6 +1,5 @@
 package com.blog.api.controller;
 
-import com.blog.api.config.data.UserSession;
 import com.blog.api.request.PostCreate;
 import com.blog.api.request.PostEdit;
 import com.blog.api.request.PostSearch;
@@ -19,16 +18,6 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-
-    @GetMapping("/foo")
-    public String foo(UserSession userSession) {
-        return "Hello, " + userSession.id;
-    }
-
-    @GetMapping("/bar")
-    public String bar(){
-        return "인증이 필요없는 페이지";
-    }
 
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate request) {
