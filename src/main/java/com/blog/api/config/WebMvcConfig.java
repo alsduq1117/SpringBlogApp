@@ -10,10 +10,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AppConfig appConfig;
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new AuthIntercepter())
-//                .excludePathPatterns("/error", "/favicon.ico");  //인증 안해도 되는 Path
-//    }
-
 }
