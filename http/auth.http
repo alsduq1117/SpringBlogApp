@@ -1,14 +1,29 @@
+### 회원가입
+
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "name": "김민엽",
+  "email": "alsduq1117@naver.com",
+  "password": "1234"
+}
+
+
+
 ### 로그인
 
 
 POST http://localhost:8080/auth/login
 Content-Type: application/x-www-form-urlencoded
 
-username=minyeob&password=1234
+username=alsduq1117@naver.com&password=1234&remember=1
 
 
-### 인증 페이지 요청
 
-GET http://localhost:8080/foo
-Content-Type: application/json
-Authorization: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIn0.yNfvFWtJZuMAHekp1zXHUZgpicAZNAVTBIgmbLIRlDquIzkwo3wIOkZjPI1Z63GBT5oStwEONDTiQq7ksRX34w
+
+
+
+### 메인 페이지
+
+GET http://localhost:8080
