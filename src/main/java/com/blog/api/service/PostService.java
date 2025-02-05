@@ -1,8 +1,11 @@
 package com.blog.api.service;
 
 import com.blog.api.domain.Post;
+import com.blog.api.domain.User;
 import com.blog.api.exception.PostNotFound;
+import com.blog.api.exception.UserNotFound;
 import com.blog.api.repository.PostRepository;
+import com.blog.api.repository.UserRepository;
 import com.blog.api.request.PostCreate;
 import com.blog.api.request.PostEdit;
 import com.blog.api.request.PostSearch;
@@ -19,13 +22,16 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PostService {
-
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
 
-    @Transactional
-    public void write(PostCreate postCreate) {
+    public void write(Long userId, PostCreate postCreate) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFound::new);
+
         Post post = Post.builder()
                 .title(postCreate.getTitle())
+                .user(user)
                 .content(postCreate.getContent())
                 .build();
         postRepository.save(post);

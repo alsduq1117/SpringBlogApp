@@ -1,8 +1,10 @@
 package com.blog.api.service;
 
 import com.blog.api.domain.Post;
+import com.blog.api.domain.User;
 import com.blog.api.exception.PostNotFound;
 import com.blog.api.repository.PostRepository;
+import com.blog.api.repository.UserRepository;
 import com.blog.api.request.PostCreate;
 import com.blog.api.request.PostEdit;
 import com.blog.api.request.PostSearch;
@@ -29,6 +31,11 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+
+
     @BeforeEach
     void clean() {
         postRepository.deleteAll();
@@ -37,6 +44,13 @@ class PostServiceTest {
     @Test
     @DisplayName("글 작성")
     void test1() {
+
+        User user = User.builder()
+                .name("김민엽")
+                .email("alsduq1117@naver.com")
+                .password("1234")
+                .build();
+        userRepository.save(user);
         // given
         PostCreate postCreate = PostCreate.builder()
                 .title("제목입니다.")
@@ -44,7 +58,7 @@ class PostServiceTest {
                 .build();
 
         // when
-        postService.write(postCreate);
+        postService.write(user.getId(), postCreate);
 
         // then
         Assertions.assertEquals(1L, postRepository.count());
