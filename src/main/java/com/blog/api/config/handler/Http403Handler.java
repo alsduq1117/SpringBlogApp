@@ -31,7 +31,7 @@ public class Http403Handler implements AccessDeniedHandler {
 
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         objectMapper.writeValue(response.getWriter(), errorResponse);
     }
 }

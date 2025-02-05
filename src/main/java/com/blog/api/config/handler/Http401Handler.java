@@ -33,7 +33,7 @@ public class Http401Handler implements AuthenticationEntryPoint {
 
         response.setContentType(APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         objectMapper.writeValue(response.getWriter(), errorResponse);
     }
 }
