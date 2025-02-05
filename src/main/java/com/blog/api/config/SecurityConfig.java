@@ -33,8 +33,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll() // "/auth/login" 경로는 인증 없이 접근 가능
-                        .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll() // "/auth/login" 경로는 인증 없이 접근 가능
+                        .requestMatchers("/auth/login").permitAll() // "/auth/login" 경로는 인증 없이 접근 가능
+                        .requestMatchers("/auth/signup").permitAll()
+                        .requestMatchers("/user").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()) // 그 외 모든 요청은 인증 필요
                 .formLogin(form -> form
                         .loginPage("/auth/login") // 로그인 페이지 URL 설정
