@@ -14,7 +14,7 @@ Content-Type: application/json
 POST http://localhost:8080/auth/login
 Content-Type: application/x-www-form-urlencoded
 
-username=alsduq1117@naver.com&password=1234&remember=1
+username=alsduq1117@naver.com&password=12345&remember=1
 
 
 ### 사용자 페이지

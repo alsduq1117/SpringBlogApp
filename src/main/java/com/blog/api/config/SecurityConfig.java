@@ -1,7 +1,12 @@
 package com.blog.api.config;
 
+import com.blog.api.config.handler.Http401Handler;
+import com.blog.api.config.handler.Http403Handler;
+import com.blog.api.config.handler.LoginFailHandler;
 import com.blog.api.domain.User;
 import com.blog.api.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,7 +24,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity(debug = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final ObjectMapper objectMapper;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -35,7 +43,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/login").permitAll() // "/auth/login" 경로는 인증 없이 접근 가능
                         .requestMatchers("/auth/signup").permitAll()
-                        .requestMatchers("/user").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/user").hasRole("USER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()) // 그 외 모든 요청은 인증 필요
                 .formLogin(form -> form
@@ -44,7 +52,12 @@ public class SecurityConfig {
                         .usernameParameter("username") // username 파라미터 이름 설정
                         .passwordParameter("password") // password 파라미터 이름 설정
                         .defaultSuccessUrl("/") // 로그인 성공 시 리다이렉트 URL 설정
+                        .failureHandler(new LoginFailHandler(objectMapper))
                 )
+                .exceptionHandling(e -> {
+                    e.accessDeniedHandler(new Http403Handler(objectMapper));
+                    e.authenticationEntryPoint(new Http401Handler(objectMapper));
+                })
                 .rememberMe(rm -> rm.rememberMeParameter("remember")    // 자동 로그인 기능
                         .alwaysRemember(false)
                         .tokenValiditySeconds(2592000)
