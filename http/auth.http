@@ -19,17 +19,3 @@ Content-Type: application/json
   "password" : "1234",
   "name" : "김민엽"
 }
-
-
-### 사용자 페이지
-
-GET http://localhost:8080/user
-
-### 관리자 페이지
-
-GET http://localhost:8080/admin
-
-
-### 메인 페이지
-
-GET http://localhost:8080

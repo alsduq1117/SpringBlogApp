@@ -4,6 +4,7 @@ import com.blog.api.config.filter.EmailPasswordAuthFilter;
 import com.blog.api.config.handler.Http401Handler;
 import com.blog.api.config.handler.Http403Handler;
 import com.blog.api.config.handler.LoginFailHandler;
+import com.blog.api.config.handler.LoginSuccessHandler;
 import com.blog.api.domain.User;
 import com.blog.api.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -84,7 +85,7 @@ public class SecurityConfig {
     public EmailPasswordAuthFilter usernamePasswordAuthenticationFilter() {
         EmailPasswordAuthFilter filter = new EmailPasswordAuthFilter("/auth/login", objectMapper);
         filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/"));
+        filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(objectMapper));
         filter.setAuthenticationFailureHandler(new LoginFailHandler(objectMapper));
         filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
 
