@@ -1,5 +1,6 @@
 package com.blog.api.controller;
 
+import com.blog.api.config.SpringblogMockUser;
 import com.blog.api.domain.Post;
 import com.blog.api.repository.PostRepository;
 import com.blog.api.request.PostCreate;
@@ -45,7 +46,7 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "alsduq1117@naver.com", roles = {"ADMIN"})
+    @SpringblogMockUser
     @DisplayName("글 작성 요청시 status 반환")
     void test() throws Exception {
         // given
@@ -71,7 +72,7 @@ class PostControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "alsduq1117@naver.com", roles = {"ADMIN"})
+    @SpringblogMockUser
     @DisplayName("글 작성")
     void test3() throws Exception {
         // given
