@@ -51,11 +51,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/login").permitAll() // "/auth/login" 경로는 인증 없이 접근 가능
-                        .requestMatchers("/auth/signup").permitAll()
-                        .requestMatchers("/user").hasRole("USER")
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .anyRequest().authenticated()) // 그 외 모든 요청은 인증 필요
+                        .anyRequest().permitAll())
                 .addFilterBefore(usernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> {
                     e.accessDeniedHandler(new Http403Handler(objectMapper));

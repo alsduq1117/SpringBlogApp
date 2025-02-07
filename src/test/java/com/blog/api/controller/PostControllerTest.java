@@ -2,7 +2,9 @@ package com.blog.api.controller;
 
 import com.blog.api.config.SpringblogMockUser;
 import com.blog.api.domain.Post;
+import com.blog.api.domain.User;
 import com.blog.api.repository.PostRepository;
+import com.blog.api.repository.UserRepository;
 import com.blog.api.request.PostCreate;
 import com.blog.api.request.PostEdit;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +26,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,9 +45,13 @@ class PostControllerTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeEach
     void clean() {
         postRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -93,17 +102,31 @@ class PostControllerTest {
 
 
     @Test
-    @WithMockUser(username = "alsduq1117@naver.com", roles = {"ADMIN"})
     @DisplayName("글 1개 조회")
     void test4() throws Exception {
         // given
-        Post post = Post.builder().title("123456789012312312").content("bar").build();
+        User user = User.builder()
+                .name("김민엽")
+                .email("alsduq1117@naver.com")
+                .password("1234")
+                .build();
+        userRepository.save(user);
 
+        Post post = Post.builder()
+                .title("123456789012345")
+                .content("bar")
+                .user(user)
+                .build();
         postRepository.save(post);
 
         // expected
-        mockMvc.perform(MockMvcRequestBuilders.get("/posts/{postId}", post.getId()).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.id").value(post.getId())).andExpect(jsonPath("$.title").value("1234567890")).andExpect(jsonPath("$.content").value("bar")).andDo(MockMvcResultHandlers.print());
-
+        mockMvc.perform(get("/posts/{postId}", post.getId())
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(post.getId()))
+                .andExpect(jsonPath("$.title").value("1234567890"))
+                .andExpect(jsonPath("$.content").value("bar"))
+                .andDo(print());
     }
 
     @Test
