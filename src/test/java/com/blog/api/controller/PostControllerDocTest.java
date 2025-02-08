@@ -1,8 +1,8 @@
 package com.blog.api.controller;
 
 import com.blog.api.domain.Post;
-import com.blog.api.repository.PostRepository;
-import com.blog.api.request.PostCreate;
+import com.blog.api.repository.post.PostRepository;
+import com.blog.api.request.post.PostCreate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,15 +1,14 @@
 package com.blog.api.controller;
 
 import com.blog.api.config.UserPrincipal;
-import com.blog.api.request.PostCreate;
-import com.blog.api.request.PostEdit;
-import com.blog.api.request.PostSearch;
+import com.blog.api.request.post.PostCreate;
+import com.blog.api.request.post.PostEdit;
+import com.blog.api.request.post.PostSearch;
 import com.blog.api.response.PostResponse;
 import com.blog.api.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

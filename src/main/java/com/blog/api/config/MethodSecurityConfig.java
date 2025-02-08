@@ -1,6 +1,6 @@
 package com.blog.api.config;
 
-import com.blog.api.repository.PostRepository;
+import com.blog.api.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

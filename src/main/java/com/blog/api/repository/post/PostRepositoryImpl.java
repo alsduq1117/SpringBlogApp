@@ -1,8 +1,8 @@
-package com.blog.api.repository;
+package com.blog.api.repository.post;
 
 import com.blog.api.domain.Post;
 import com.blog.api.domain.QPost;
-import com.blog.api.request.PostSearch;
+import com.blog.api.request.post.PostSearch;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
