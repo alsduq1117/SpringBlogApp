@@ -9,8 +9,7 @@ import com.blog.api.request.PostCreate;
 import com.blog.api.request.PostEdit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,23 +49,10 @@ class PostControllerTest {
     @Autowired
     private UserRepository userRepository;
 
-    @BeforeEach
+    @AfterEach
     void clean() {
         postRepository.deleteAll();
         userRepository.deleteAll();
-    }
-
-    @Test
-    @SpringblogMockUser
-    @DisplayName("글 작성 요청시 status 반환")
-    void test() throws Exception {
-        // given
-        PostCreate request = PostCreate.builder().title("제목입니다.").content("내용입니다.").build();
-
-        String json = objectMapper.writeValueAsString(request);
-
-        // when,then
-        mockMvc.perform(MockMvcRequestBuilders.post("/posts").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
     }
 
     @Test
@@ -85,19 +73,26 @@ class PostControllerTest {
     @DisplayName("글 작성")
     void test3() throws Exception {
         // given
-        PostCreate request = PostCreate.builder().title("제목입니다.").content("내용입니다.").build();
+        PostCreate request = PostCreate.builder()
+                .title("제목입니다.")
+                .content("내용입니다.")
+                .build();
 
         String json = objectMapper.writeValueAsString(request);
 
         // when
-        mockMvc.perform(MockMvcRequestBuilders.post("/posts").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
+        mockMvc.perform(post("/posts")
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andDo(print());
 
-        //then
-        Assertions.assertEquals(1L, postRepository.count());
+        // then
+        assertEquals(1L, postRepository.count());
 
         Post post = postRepository.findAll().get(0);
-        Assertions.assertEquals("제목입니다.", post.getTitle());
-        Assertions.assertEquals("내용입니다.", post.getContent());
+        assertEquals("제목입니다.", post.getTitle());
+        assertEquals("내용입니다.", post.getContent());
     }
 
 
