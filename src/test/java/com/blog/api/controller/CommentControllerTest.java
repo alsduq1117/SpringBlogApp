@@ -1,6 +1,5 @@
 package com.blog.api.controller;
 
-import com.blog.api.config.SpringblogMockUser;
 import com.blog.api.domain.Comment;
 import com.blog.api.domain.Post;
 import com.blog.api.domain.User;
@@ -8,6 +7,7 @@ import com.blog.api.repository.UserRepository;
 import com.blog.api.repository.comment.CommentRepository;
 import com.blog.api.repository.post.PostRepository;
 import com.blog.api.request.comment.CommentCreate;
+import com.blog.api.request.comment.CommentDelete;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -95,6 +94,46 @@ class CommentControllerTest {
         assertNotEquals("123456", savedComment.getPassword());
         assertTrue(passwordEncoder.matches("123456", savedComment.getPassword()));
         assertEquals("댓글입니다. 아아아아아 10글자 제한", savedComment.getContent());
+    }
+
+
+    @Test
+    @DisplayName("댓글 삭제")
+    void test2() throws Exception {
+        // given
+        User user = User.builder()
+                .name("김민엽")
+                .email("alsduq1117@naver.com")
+                .password("1234")
+                .build();
+        userRepository.save(user);
+
+        Post post = Post.builder()
+                .title("123456789012345")
+                .content("bar")
+                .user(user)
+                .build();
+        postRepository.save(post);
+
+        String encryptedPassword = passwordEncoder.encode("123456");
+        Comment comment = Comment.builder()
+                .author("김민엽")
+                .password(encryptedPassword)
+                .content("10101010101010101010")
+                .build();
+
+        comment.setPost(post);
+        commentRepository.save(comment);
+
+        CommentDelete request = new CommentDelete("123456");
+        String json = objectMapper.writeValueAsString(request);
+
+        //
+        mockMvc.perform(post("/comments/{commentId}/delete", comment.getId())
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(json))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
 
