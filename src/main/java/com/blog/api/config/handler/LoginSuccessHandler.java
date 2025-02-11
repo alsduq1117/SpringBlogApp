@@ -1,7 +1,6 @@
 package com.blog.api.config.handler;
 
 import com.blog.api.config.UserPrincipal;
-import com.blog.api.response.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -75,7 +75,6 @@ public class SecurityConfig {
     }
 
 
-
     @Bean
     public EmailPasswordAuthFilter usernamePasswordAuthenticationFilter() {
         EmailPasswordAuthFilter filter = new EmailPasswordAuthFilter("/auth/login", objectMapper);
