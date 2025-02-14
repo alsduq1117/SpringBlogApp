@@ -1,29 +1,19 @@
 <template>
-  <div class="header">
-    <img src="/images/logo.png" alt="logo" class="logo"/>
-    <div class="title">호돌맨 블로그</div>
-  </div>
+  <el-header class="header">
+    <!--    <RouterLink to="/">Home</RouterLink>-->
+    <!--    <RouterLink to="/write">글 작성</RouterLink>-->
+    <el-menu mode="horizontal" router>
+      <el-menu-item index="/">Home</el-menu-item>
+      <el-menu-item index="/write">글 작성</el-menu-item>
+    </el-menu>
+  </el-header>
 </template>
 
 <script setup lang="ts"></script>
 
-<style scoped lang="scss">
+<style scoped>
 .header {
+  padding: 0;
   height: 60px;
-  margin: 1rem 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.logo {
-  width: 52px;
-  object-fit: cover;
-}
-
-.title {
-  font-size: 2rem;
-  font-weight: 300;
-  margin-left: 5px;
 }
 </style>

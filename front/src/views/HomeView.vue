@@ -1,74 +1,79 @@
 <script setup lang="ts">
-import type Post from '@/entity/post/Post'
-import { onMounted, reactive } from 'vue'
-import { container } from 'tsyringe'
-import PostRepository from '@/repository/PostRepository'
-import Paging from '@/entity/data/Paging'
-import PostComponent from '@/components/PostComponent.vue'
+import axios from "axios";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-const POST_REPOSITORY = container.resolve(PostRepository)
+const router = useRouter();
 
-type StateType = {
-  postList: Paging<Post>
-}
+const posts = ref([]);
 
-const state = reactive<StateType>({
-  postList: new Paging<Post>(),
-})
-
-function getList(page = 1) {
-  POST_REPOSITORY.getList(page).then((postList) => {
-    state.postList = postList
-  })
-}
-
-onMounted(() => {
-  getList()
-})
+axios.get("/api/posts?page=1&size=5").then((response) => {
+  response.data.forEach((r: any) => {
+    posts.value.push(r);
+  });
+});
 </script>
 
 <template>
-  <div class="content">
-    <span class="totalCount">게시글 수: {{ state.postList.totalCount }}</span>
+  <ul>
+    <li v-for="post in posts" :key="post.id">
+      <div class="title">
+        <router-link :to="{ name: 'read', params: { postId: post.id } }">{{
+          post.title
+        }}</router-link>
+      </div>
 
-    <ul class="posts">
-      <li v-for="post in state.postList.items" :key="post.id">
-        <PostComponent :post="post" />
-      </li>
-    </ul>
+      <div class="content">
+        {{ post.content }}
+      </div>
 
-    <div style="width: 100%; display: flex; justify-content: center">
-      <el-pagination
-        :background="true"
-        layout="prev, pager, next"
-        v-model:current-page="state.postList.page"
-        :total="state.postList.totalCount"
-        :default-page-size="3"
-        @current-change="(page: number) => getList(page)"
-      />
-    </div>
-  </div>
+      <div class="sub d-flex">
+        <div class="category">개발</div>
+        <div class="regDate">2022-06-01</div>
+      </div>
+    </li>
+  </ul>
 </template>
 
 <style scoped lang="scss">
-.content {
-  padding: 0 1rem 0 1rem;
-  margin-bottom: 2rem;
-}
-
-.totalCount {
-  font-size: 0.88rem;
-}
-
-.posts {
+ul {
   list-style: none;
   padding: 0;
 
   li {
-    margin-bottom: 2.4rem;
+    margin-bottom: 2rem;
+
+    .title {
+      a {
+        font-size: 1.1rem;
+        color: #383838;
+        text-decoration: none;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .content {
+      font-size: 0.85rem;
+      margin-top: 8px;
+      line-height: 1.4;
+      color: #7e7e7e;
+    }
 
     &:last-child {
       margin-bottom: 0;
+    }
+
+    .sub {
+      margin-top: 8px;
+      font-size: 0.78rem;
+
+      .regDate {
+        margin-left: 10px;
+        color: #6b6b6b;
+      }
     }
   }
 }
